@@ -147,7 +147,7 @@ export default class SearchFrom extends Component{
     });
         AsyncStorage.setItem('searchHistoryItem',JSON.stringify(newSearchHistory));
     }
-    //this.deleteSearchHistoryItem(item)
+
     renderRow(item){
         return(
             <TouchableHighlight

@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import MovieDetails from './MovieDetails';
 import styles from '../Styles/Main';
+//let REQUEST_URL=`https://api.douban.com/v2/movie/search?q=${this.state.query}`
 export default class SearchResult extends Component{
     constructor(props){
         super(props);
@@ -45,12 +46,12 @@ export default class SearchResult extends Component{
     }
 
     showMovieDetails(rowData){
-        alert(rowData.title)
+
         this.props.navigator.push({
             name:rowData.title,
             component:MovieDetails,
             passProps:{
-                result,
+                rowData,
             }
         });
     }

@@ -12,20 +12,34 @@ import {
 } from 'react-native';
 import styles from '../Styles/Main';
 import MovieDetails from './MovieDetails'
-var REQUEST_URL='https://api.douban.com/v2/movie/top250';
+
 export default class MovieList extends Component{
     constructor(props){
         super(props);
         this.state={
-            movies:null,
+            movies:[],
+            loaded:false,
+            count:20,
+            start:0,
+            total:250,
         }
+        this.dataSource=new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
+        this.REQUEST_URL='https://api.douban.com/v2/movie/top250';
     }
-
+    requestURL(
+        url=this.REQUEST_URL,
+        count=this.state.count,
+        start=this.state.start,
+    ){
+        return(
+            `${url}?count=${count}&start=${start}`
+        );
+    }
     //渲染listView组件
     render(){
         //在listview获取数据之前，我们先要给一个加载中的视图。
-        let state=this.state.movies;
-        if(!state){
+        //let state=this.state.movies;
+        if(!this.state.loaded){
             return(
                 <View style={styles.loading}>
                    <ActivityIndicator size='large' color='#6535c9' />
@@ -34,11 +48,65 @@ export default class MovieList extends Component{
         }
         return(
                 <ListView
+                    renderFooter={this.renderFooter.bind(this)}
+                    pageSize={this.state.count}
+                    initialListSize={this.state.count}       //listview初始显示的数量
+                    onEndReached={this.endReached.bind(this)}
                     style={{marginTop:56}}
-                    dataSource= {this.state.movies}
+                    dataSource= {this.dataSource.cloneWithRows(this.state.movies)}
                     renderRow={(rowData)=>this.renderRow(rowData) }
                 />
         );
+    }
+    renderFooter(){
+        if(this.state.total>this.state.start){
+            return(
+                <View style={{
+                    marginVertical:10,
+
+                    alignSelf:'center'
+                }}>
+                    <ActivityIndicator  color='#6535c9'/>
+                    <Text style={{color:'#6535c9', fontSize:12,}}>加载中...</Text>
+                </View>
+            );
+        }else{
+            return(
+                <View style={{
+                    marginVertical:10,
+
+                    alignSelf:'center'
+                }}>
+                    <Text style={{
+                        fontSize:12,
+                        color:'rgba(255,255,255,0.8)'
+                    }}>没有更多可以显示的了:)</Text>
+                </View>
+            );
+        }
+    }
+    loadMore(){
+         fetch(this.requestURL())
+                     .then(response=>response.json())
+                     .then(responseData=>{
+                         let newStart=this.state.start+responseData.count;
+                         this.setState({
+                             movies:[...this.state.movies,...responseData.subjects],
+                             start:newStart
+                         });
+                     })
+                     .catch((error)=>{
+                         console.error(error)
+                         //alert(error);
+                     })
+                     .done();
+
+    }
+    endReached(){
+        //如果有还有数据就重新再次请求一次
+        if(this.state.total>this.state.start){
+            this.loadMore();
+        }
     }
 
     showMovieDetails(rowData){
@@ -68,19 +136,22 @@ export default class MovieList extends Component{
             </TouchableHighlight>
         );
     }
-    //{uri:rowData.images.large}
-//`${rowData.original_title}(${rowData.year})`
+
     componentDidMount() {
         this.fetchData();
     }
     fetchData(){
         //请求数据
-        fetch(REQUEST_URL)
+        fetch(this.requestURL())
             .then(response=>response.json())
             .then(responseData=>{
                 // this.state.movies=responseData.subjects;
+                let newStart=responseData.start + responseData.count;
                 this.setState({
-                    movies:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}).cloneWithRows(responseData.subjects)
+                    loaded:true,
+                    movies:responseData.subjects,
+                    total:responseData.total,
+                    start:newStart
                 });
             })
             .catch((error)=>{
