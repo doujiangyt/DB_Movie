@@ -12,6 +12,7 @@ import {
     TouchableHighlight,
 } from 'react-native';
 import styles from '../Styles/Main';
+import OtherLogin from './OtherLogin';
 export default class Mine extends Component{
     constructor(props){
         super(props);
@@ -20,7 +21,7 @@ export default class Mine extends Component{
     render(){
        return(
            <View style={styles.container}>
-               <Text>Mine</Text>
+               <OtherLogin/>
            </View>
        );
     }

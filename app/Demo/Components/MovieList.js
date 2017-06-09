@@ -19,7 +19,7 @@ export default class MovieList extends Component{
         this.state={
             movies:[],
             loaded:false,
-            count:20,
+            count:100,
             start:0,
             total:250,
         }
@@ -63,7 +63,6 @@ export default class MovieList extends Component{
             return(
                 <View style={{
                     marginVertical:10,
-
                     alignSelf:'center'
                 }}>
                     <ActivityIndicator  color='#6535c9'/>
@@ -74,12 +73,11 @@ export default class MovieList extends Component{
             return(
                 <View style={{
                     marginVertical:10,
-
                     alignSelf:'center'
                 }}>
                     <Text style={{
                         fontSize:12,
-                        color:'rgba(255,255,255,0.8)'
+                        color:'#6535c9'
                     }}>没有更多可以显示的了:)</Text>
                 </View>
             );

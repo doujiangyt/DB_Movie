@@ -15,6 +15,7 @@ import {
     View,
     StyleSheet
 } from 'react-native';
+import MyView from "./Components/MyView";
 
 //底部导航
 export default class Movie extends Component {
@@ -28,8 +29,6 @@ export default class Movie extends Component {
     //渲染listView组件
     render() {
         return (
-
-
             <TabNavigator tabBarStyle={{backgroundColor:"darkslateblue"} }>
                {/* --推荐电影--
                 {this.renderTabBarItem('推荐电影',unpress_star,press_star,'推荐电影','推荐电影',MovieList)}
@@ -80,7 +79,7 @@ export default class Movie extends Component {
                     //renderBadge={() => <USBox />}
                     onPress={() => this.setState({ selectedTab: '我的' })}>
 
-                    <Mine/>
+                    <MyView/>
                 </TabNavigator.Item>
             </TabNavigator>
 
