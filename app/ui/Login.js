@@ -3,44 +3,68 @@
  */
 import React,{Component} from 'react';
 import {
-
+    PixelRatio,
     StyleSheet,
     Text,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage,
 } from 'react-native';
 
 import EditNameView from '../lib/EditNameView';
 import EditPasswordView from '../lib/EditPasswordView';
 import LoginButton from '../lib/LoginButton';
-import LoginSuccess from '../ui/LoginSuccess';
+
 import Movie from '../Demo/Movie';
 import NetUitl from '../lib/NetUtil';
+import Register from './Register';
 export default class LoginActivity extends Component{
     constructor(props){
         super(props);
         this.userName="";
         this.passWord="";
+
     }
     render(){
         return(
             <View style={LoginStyles.loginview}>
-                <View style={{flexDirection:'row',height:100,marginTop:1,justifyContent:'center',alignItems:'flex-start'}}>
-                    <Image source={require('../img/favicon.jpg')}/>
-                </View>
-                <View style={{marginTop:80}}>
-                    <EditNameView name='输入用户名/注册手机号' onChangeText={(text)=>{     //相当于是自定义一个EditText
-                    this.userName=text;}
-                    }/>
-                    <EditPasswordView  name='输入密码' onChangeText={(text)=>{
-                        this.passWord=text;
-                    }}/>
-                </View>
-                <LoginButton name='登陆' onPressCallback={this.onPressCallback}/>
-                <TouchableOpacity><Text style={{color:'#4a90e2',textAlign:'center',marginTop:10}}>忘记密码？</Text></TouchableOpacity>
-            </View>
+    <View style={{flexDirection:'row',height:100,paddingTop:30,justifyContent:'center',alignItems:'flex-start'}}>
+    <Image source={require('../Demo/image/favicon.jpg')} style={LoginStyles.image}/>
+    </View>
+        <View style={{marginTop:80}}>
+    <EditNameView name='输入用户名/注册手机号' onChangeText={(text)=>{     //相当于是自定义一个EditText
+            this.userName=text;}
+    }/>
+    <EditPasswordView  name='输入密码' onChangeText={(text)=>{
+            this.passWord=text;
+        }}/>
+    </View>
+        <LoginButton name='登陆' onPressCallback={this.onPressCallback}/>
+    <View style={LoginStyles.textAll}>
+    <TouchableOpacity style={LoginStyles.leftText} onPress={this.forgetPassword.bind(this)}>
+    <Text style={{color:'#4a90e2'}}>忘记密码？</Text>
+    </TouchableOpacity>
+        <TouchableOpacity style={LoginStyles.rightText} onPress={this.newUserRegister.bind(this)}>
+            <Text style={{color:'#4a90e2'}}>新用户注册</Text>
+        </TouchableOpacity>
+    </View>
+    </View>
         );
+    }
+
+    //新用户注册的按钮，点击后跳转到注册界面
+    newUserRegister(){
+        this.props.navigator.push({
+            name:'Register',
+            component:Register,
+        });
+    }
+
+
+    //忘记密码的按钮
+    forgetPassword(){
+
     }
     onPressCallback=()=>{
        /* let formData=new FormData();
@@ -51,8 +75,49 @@ export default class LoginActivity extends Component{
             alert(responseText);
             this.onLoginSuccess();
         })*/
-        this.onLoginSuccess();
+       // this.onLoginSuccess();
+
+        //登录之前，先要从AsyncStorage中取出userName与用户当前输入的userName进行匹配。
+        AsyncStorage.getAllKeys((error,keys)=>{
+
+            if(!error){
+                try {
+                    keys.indexOf(this.userName)!==-1?this.hasKey():this.unExist()
+                }catch (e){
+
+                }
+            }else{
+
+            }
+        })
+           /* .then((searchUsers)=>{
+                if(searchUsers.this.state.userName)){
+                    searchUsers.get(this.state.userName)===this.state.userName?this.onLoginSuccess.bind(this):this.wrongPassword.bind(this);
+                }else{
+                    alert('您输入的用户名不存在！')
+                }
+            })*/
     };
+    unExist(){
+        alert('您输入的用户名不存在,请重新输入！')
+    }
+    hasKey(){
+        AsyncStorage.getItem(this.userName,(error,result)=>{
+            if(!error){
+                try {
+                    result===this.passWord?this.onLoginSuccess():this.wrongPassword();
+                }catch (e){
+
+                }
+            }else{
+
+            }
+
+        })
+    }
+    wrongPassword(){
+        alert('您输入的用户名或密码错误，请重新输入！')
+    }
     onLoginSuccess(){
         const {navigator}=this.props;//从navigator.js中将navigator取出来。
         if(navigator){
@@ -61,9 +126,6 @@ export default class LoginActivity extends Component{
                 component:Movie,
             });
         }
-      /*  navigator.push({
-            name:'LoginSuccess',
-            component:LoginSuccess,})*/
     }
 }
 
@@ -76,6 +138,21 @@ class LogLineView extends Component{
 }
 
 const LoginStyles=StyleSheet.create({
+    leftText:{
+        paddingLeft:10,
+        flex:1,
+
+    },
+    rightText:{
+        paddingRight:10,
+        flex:1,
+        alignItems:'flex-end',
+
+    },
+    textAll:{
+        flexDirection:'row',
+        marginTop:10
+    },
     loginview:{
         flex:1,
         padding:30,
@@ -83,5 +160,11 @@ const LoginStyles=StyleSheet.create({
     },
     loginline:{
 
-    }
+    },
+    image:{
+
+        width:90,
+        height:90,
+        borderRadius:90/PixelRatio.get(),    //得到原形图片的方法
+    },
 });

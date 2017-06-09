@@ -46,7 +46,8 @@ export default class OtherLogin extends Component{
     render(){
        return(
         <WebView
-            source={{uri:this.authUrl}}
+           // source={{uri:this.authUrl}}
+            source={{uri:'https://github.com/doujiangyt/DB_Movie'}}
             startInLoadingState={true}
             onNavigationStateChange={this.navigationStateChange.bind(this)}
         >

@@ -42,7 +42,7 @@ export default class Splash extends Component{
     JumpMovie(){
         const {navigator}=this.props;//从navigator.js中将navigator取出来。
         if(navigator) {
-            navigator.push({
+            navigator.replace({
                 name: 'Login',
                 component: Login,
             });
