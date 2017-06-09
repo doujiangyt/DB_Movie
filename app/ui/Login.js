@@ -10,6 +10,7 @@ import {
     Image,
     TouchableOpacity,
     AsyncStorage,
+    ToastAndroid
 } from 'react-native';
 
 import EditNameView from '../lib/EditNameView';
@@ -102,10 +103,12 @@ export default class LoginActivity extends Component{
         })
     }
     hint(){
-        alert('用户名或密码不能为空！')
+        //alert('用户名或密码不能为空！')
+        ToastAndroid.showWithGravity('用户名或密码不能为空！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
     }
     unExist(){
-        alert('您输入的用户名不存在,请重新输入！')
+       // alert('您输入的用户名不存在,请重新输入！')
+        ToastAndroid.showWithGravity('您输入的用户名不存在,请重新输入！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
     }
     hasKey(){
         AsyncStorage.getItem(this.userName,(error,result)=>{
@@ -122,7 +125,8 @@ export default class LoginActivity extends Component{
         })
     }
     wrongPassword(){
-        alert('您输入的用户名或密码错误，请重新输入！')
+        //alert('您输入的用户名或密码错误，请重新输入！')
+        ToastAndroid.showWithGravity('您输入的用户名或密码错误，请重新输入！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
     }
     onLoginSuccess(){
         const {navigator}=this.props;//从navigator.js中将navigator取出来。

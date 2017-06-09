@@ -13,6 +13,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     AsyncStorage,
+    ToastAndroid,
 } from 'react-native';
 import EditNameView from '../lib/EditNameView';
 import EditPasswordView from '../lib/EditPasswordView';
@@ -82,11 +83,13 @@ export default class Register extends Component{
     }
 
     hint(){
-        alert('用户名或密码不能为空！')
+       // alert('用户名或密码不能为空！')
+        ToastAndroid.showWithGravity('用户名或密码不能为空！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
     }
 
     hasKey(){
-        alert('用户名已经存在，请重新输入用户名！')
+        //alert('用户名已经存在，请重新输入用户名！')
+        ToastAndroid.showWithGravity('用户名已经存在，请重新输入用户名！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
     }
     toSaveUser(){
         //对新用户进行存储
@@ -96,12 +99,15 @@ export default class Register extends Component{
                 try{
                     //存储后提示成功，并跳转。
                     this.registerSuccess();
-                    alert('注册成功！')
+                    //alert('注册成功！')
+                    ToastAndroid.showWithGravity('注册成功！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
                 }catch(error){
-                    alert(`注册失败${error}！`)
+                    //alert(`注册失败${error}！`)
+                    ToastAndroid.showWithGravity(`注册失败${error}！`,ToastAndroid.SHORT,ToastAndroid.BOTTOM);
                 }
             }else{
-                alert('注册失败！')
+              //  alert('注册失败！')
+                ToastAndroid.showWithGravity('注册失败',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
             }
         })
 
