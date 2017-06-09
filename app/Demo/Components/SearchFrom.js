@@ -65,7 +65,9 @@ export default class SearchFrom extends Component{
                              name:`${this.state.query}相关电影`,
                              component:SearchResult,
                              passProps:{
-                                 results:responseData.subjects
+                                 results:responseData.subjects,
+                                 queryWords:this.state.query,
+                                 responseDataTotal:responseData,
                              }
                          });
                      })
@@ -83,7 +85,7 @@ export default class SearchFrom extends Component{
                    <TextInput
                        //secureTextEntry={true} 设置文本的安全输入
                        value={this.state.query}
-                      // autoFocus={true}        //自动获取焦点
+                       //autoFocus={true}        //自动获取焦点
                        placeholder='搜索...' //占位符
                        //clearButtonMode='always'  //清除按钮出现在文本视图右侧的时机
                        returnKeyType='search'
@@ -94,10 +96,9 @@ export default class SearchFrom extends Component{
                             })
                        }}
                        onSubmitEditing={               //这个方法是用来点击软键盘上的搜索或者enter时，将数据进行提交，到服务器上去查询
-
                                this.fetchData.bind(this)
-
                        }
+
 
                       // onBlur={Keyboard.dismiss()}
                    />
