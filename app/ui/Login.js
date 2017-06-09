@@ -15,7 +15,7 @@ import {
 import EditNameView from '../lib/EditNameView';
 import EditPasswordView from '../lib/EditPasswordView';
 import LoginButton from '../lib/LoginButton';
-
+import ForgetPassword from './ForgetPassword';
 import Movie from '../Demo/Movie';
 import NetUitl from '../lib/NetUtil';
 import Register from './Register';
@@ -29,33 +29,33 @@ export default class LoginActivity extends Component{
     render(){
         return(
             <View style={LoginStyles.loginview}>
-    <View style={{flexDirection:'row',height:100,paddingTop:30,justifyContent:'center',alignItems:'flex-start'}}>
-    <Image source={require('../Demo/image/favicon.jpg')} style={LoginStyles.image}/>
-    </View>
-        <View style={{marginTop:80}}>
-    <EditNameView name='输入用户名/注册手机号' onChangeText={(text)=>{     //相当于是自定义一个EditText
-            this.userName=text;}
-    }/>
-    <EditPasswordView  name='输入密码' onChangeText={(text)=>{
-            this.passWord=text;
-        }}/>
-    </View>
-        <LoginButton name='登陆' onPressCallback={this.onPressCallback}/>
-    <View style={LoginStyles.textAll}>
-    <TouchableOpacity style={LoginStyles.leftText} onPress={this.forgetPassword.bind(this)}>
-    <Text style={{color:'#4a90e2'}}>忘记密码？</Text>
-    </TouchableOpacity>
-        <TouchableOpacity style={LoginStyles.rightText} onPress={this.newUserRegister.bind(this)}>
-            <Text style={{color:'#4a90e2'}}>新用户注册</Text>
-        </TouchableOpacity>
-    </View>
-    </View>
+                <View style={{flexDirection:'row',height:100,paddingTop:30,justifyContent:'center',alignItems:'flex-start'}}>
+                    <Image source={require('../Demo/image/favicon.jpg')} style={LoginStyles.image}/>
+                </View>
+                <View style={{marginTop:80}}>
+                    <EditNameView name='输入用户名/注册手机号' onChangeText={(text)=>{     //相当于是自定义一个EditText
+                    this.userName=text;}
+                }/>
+                    <EditPasswordView  name='输入密码' onChangeText={(text)=>{
+                        this.passWord=text;
+                    }}/>
+                </View>
+                <LoginButton name='登陆' onPressCallback={this.onPressCallback}/>
+                <View style={LoginStyles.textAll}>
+                    <TouchableOpacity style={LoginStyles.leftText} onPress={this.forgetPassword.bind(this)}>
+                        <Text style={{color:'#4a90e2'}}>忘记密码？</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={LoginStyles.rightText} onPress={this.newUserRegister.bind(this)}>
+                        <Text style={{color:'#4a90e2'}}>新用户注册</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         );
     }
 
     //新用户注册的按钮，点击后跳转到注册界面
     newUserRegister(){
-        this.props.navigator.push({
+        this.props.navigator.replace({
             name:'Register',
             component:Register,
         });
@@ -64,7 +64,10 @@ export default class LoginActivity extends Component{
 
     //忘记密码的按钮
     forgetPassword(){
-
+        this.props.navigator.replace({
+            name:'ForgetPassword',
+            component:ForgetPassword
+        });
     }
     onPressCallback=()=>{
        /* let formData=new FormData();
@@ -76,7 +79,14 @@ export default class LoginActivity extends Component{
             this.onLoginSuccess();
         })*/
        // this.onLoginSuccess();
+        if(this.userName===''||this.passWord===''){
+            this.hint()
+        }else{
+            this.searchUsers()
+        }
 
+    };
+    searchUsers(){
         //登录之前，先要从AsyncStorage中取出userName与用户当前输入的userName进行匹配。
         AsyncStorage.getAllKeys((error,keys)=>{
 
@@ -90,14 +100,10 @@ export default class LoginActivity extends Component{
 
             }
         })
-           /* .then((searchUsers)=>{
-                if(searchUsers.this.state.userName)){
-                    searchUsers.get(this.state.userName)===this.state.userName?this.onLoginSuccess.bind(this):this.wrongPassword.bind(this);
-                }else{
-                    alert('您输入的用户名不存在！')
-                }
-            })*/
-    };
+    }
+    hint(){
+        alert('用户名或密码不能为空！')
+    }
     unExist(){
         alert('您输入的用户名不存在,请重新输入！')
     }
@@ -129,13 +135,6 @@ export default class LoginActivity extends Component{
     }
 }
 
-class LogLineView extends Component{
-    render(){
-        return(
-            <Text style={styles.loginline}>没有账号</Text>
-        );
-    }
-}
 
 const LoginStyles=StyleSheet.create({
     leftText:{

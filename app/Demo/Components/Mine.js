@@ -11,7 +11,7 @@ import {
     ActivityIndicator,
     TouchableHighlight,
 } from 'react-native';
-import styles from '../Styles/Main';
+
 import OtherLogin from './OtherLogin';
 export default class Mine extends Component{
     constructor(props){
@@ -20,7 +20,7 @@ export default class Mine extends Component{
 
     render(){
        return(
-           <View style={styles.container}>
+           <View style={{flex:1}}>
                <OtherLogin/>
            </View>
        );

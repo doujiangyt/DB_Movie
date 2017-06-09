@@ -11,24 +11,29 @@ import {
     StyleSheet,
     ActivityIndicator,
     TouchableHighlight,
+    TouchableOpacity,
     AsyncStorage,
 } from 'react-native';
 import EditNameView from '../lib/EditNameView';
 import EditPasswordView from '../lib/EditPasswordView';
 import LoginButton from '../lib/LoginButton';
 import Movie from '../Demo/Movie';
+import Login from './Login';
 export default class Register extends Component{
     constructor(props){
         super(props);
         this.userName=''
         this.passWord=''
-
-
     }
-
+//<Text style={{color:'#3281dd'}}>返回</Text>
     render(){
        return(
            <View style={RegisterStyles.registerView}>
+
+               <TouchableOpacity  onPress={this.reverseBack.bind(this)}>
+                   <Text style={{color:'#3281dd'}}>返回</Text>
+               </TouchableOpacity>
+
                <Text style={RegisterStyles.registerText}>新用户注册</Text>
                <View style={{marginTop:20}}>
                    <EditNameView name='输入用户名' onChangeText={(text)=>{     //相当于是自定义一个EditText
@@ -43,6 +48,12 @@ export default class Register extends Component{
            </View>
        );
     }
+    reverseBack(){
+        this.props.navigator.replace({
+            name:'Login',
+            component:Login,
+        });
+    }
     //点击注册后，将数据存储在AsyncStorage中，
     onPressCallback(){
         //1，提交之前，先要判断用户名和密码是否不为空
@@ -55,15 +66,6 @@ export default class Register extends Component{
     }
     searchUsers(){
         //将从输入框中得到的数据，到AsyncStorage中去查询，如果有就提示用户名已注册。没有就存储。
-      //  let searchUsers=this.state.searchUsers
-       /* AsyncStorage.getItem(this.userName,(error,result)=>{
-         if(!error){
-
-         }
-         })
-         .then((searchUsers)=>{
-         searchUsers.has(this.userName)?this.hasExist.bind(this):this.toSaveUser.bind(this);
-         })*/
         AsyncStorage.getAllKeys((error,keys)=>{
 
             if(!error){
@@ -117,15 +119,16 @@ export default class Register extends Component{
 let RegisterStyles=new StyleSheet.create({
     registerView:{
         flex:1,
-        padding:30,
-        backgroundColor:'#ffffff',
+
+        padding:30
     },
     registerText:{
         textAlign:'center',
         fontSize:18,
-        color:'rgba(0,0,0,0.3)',
+        color:'#3281dd',
         fontWeight:'300',
         fontFamily:'Helvetica Neue',
         marginTop:60,
     },
+
 });

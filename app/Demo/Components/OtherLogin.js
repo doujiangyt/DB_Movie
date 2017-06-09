@@ -47,7 +47,8 @@ export default class OtherLogin extends Component{
        return(
         <WebView
            // source={{uri:this.authUrl}}
-            source={{uri:'https://github.com/doujiangyt/DB_Movie'}}
+            source={{uri:'https://github.com/doujiangyt'}}
+            //source={{uri:'https://www.baidu.com'}}
             startInLoadingState={true}
             onNavigationStateChange={this.navigationStateChange.bind(this)}
         >
