@@ -93,7 +93,7 @@ export default class LoginActivity extends Component{
 
             if(!error){
                 try {
-                    keys.indexOf(this.userName)!==-1?this.hasKey():this.unExist()
+                    keys.indexOf(this.userName)!==-1?this.hasKey():this.unExist()    //在keys的数组中通过角标查询userName，如果没有则就放回-1
                 }catch (e){
 
                 }
@@ -104,11 +104,11 @@ export default class LoginActivity extends Component{
     }
     hint(){
         //alert('用户名或密码不能为空！')
-        ToastAndroid.showWithGravity('用户名或密码不能为空！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
+        ToastAndroid.show('用户名或密码不能为空！',ToastAndroid.SHORT);
     }
     unExist(){
        // alert('您输入的用户名不存在,请重新输入！')
-        ToastAndroid.showWithGravity('您输入的用户名不存在,请重新输入！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
+        ToastAndroid.show('您输入的用户名不存在,请重新输入！',ToastAndroid.SHORT);
     }
     hasKey(){
         AsyncStorage.getItem(this.userName,(error,result)=>{
@@ -126,7 +126,7 @@ export default class LoginActivity extends Component{
     }
     wrongPassword(){
         //alert('您输入的用户名或密码错误，请重新输入！')
-        ToastAndroid.showWithGravity('您输入的用户名或密码错误，请重新输入！',ToastAndroid.SHORT,ToastAndroid.BOTTOM);
+        ToastAndroid.show('您输入的用户名或密码错误，请重新输入！',ToastAndroid.SHORT);
     }
     onLoginSuccess(){
         const {navigator}=this.props;//从navigator.js中将navigator取出来。

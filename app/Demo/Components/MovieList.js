@@ -19,7 +19,7 @@ export default class MovieList extends Component{
         this.state={
             movies:[],
             loaded:false,
-            count:100,
+            count:20,
             start:0,
             total:250,
         }
@@ -49,12 +49,12 @@ export default class MovieList extends Component{
         return(
                 <ListView
                     renderFooter={this.renderFooter.bind(this)}
-                    pageSize={this.state.count}
+                    pageSize={this.state.count}              //一页能显示的数量。
                     initialListSize={this.state.count}       //listview初始显示的数量
                     onEndReached={this.endReached.bind(this)}
                     style={{marginTop:56}}
-                    dataSource= {this.dataSource.cloneWithRows(this.state.movies)}
-                    renderRow={(rowData)=>this.renderRow(rowData) }
+                    dataSource= {this.dataSource.cloneWithRows(this.state.movies)}   //listview的数据源
+                    renderRow={(rowData)=>this.renderRow(rowData) }     //这是用来展示渲染listview每一个Item的视图的
                 />
         );
     }
@@ -122,7 +122,6 @@ export default class MovieList extends Component{
                 underlayColor='rgba(34,26,38,0.1)'
                 onPress={()=>this.showMovieDetails(rowData)}
                 >
-
                 <View style={styles.item}>
                     <Image source={{uri:rowData.images.large}} style={styles.image}/>
                     <View style={styles.textContent}>
@@ -134,7 +133,7 @@ export default class MovieList extends Component{
             </TouchableHighlight>
         );
     }
-
+    //初次渲染完成之后调用。
     componentDidMount() {
         this.fetchData();
     }
@@ -146,7 +145,7 @@ export default class MovieList extends Component{
                 // this.state.movies=responseData.subjects;
                 let newStart=responseData.start + responseData.count;
                 this.setState({
-                    loaded:true,
+                    loaded:true,   //请求到数据了，改变指示器的标记
                     movies:responseData.subjects,
                     total:responseData.total,
                     start:newStart

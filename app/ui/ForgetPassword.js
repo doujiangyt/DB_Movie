@@ -19,11 +19,12 @@ export default class ForgetPassword extends Component{
         super(props);
     }
 
+    //如果有使用到this.props.的话，需要在前面的方法里面把this传递过来，否则界面将不会被展示。
     render(){
        return(
        <View style={ForgetPasswordStyle.container}>
            <Text style={ForgetPasswordStyle.content}>哥们，你还是去注册一个账号吧！</Text>
-           <LoginButton name='返回' onPressCallback={this.onPressCallback()} style={{padding:30}}/>
+           <LoginButton name='返回' onPressCallback={this.onPressCallback.bind(this)} style={{padding:30}}/>
        </View>
        );
     }

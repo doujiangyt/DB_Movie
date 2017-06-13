@@ -34,15 +34,15 @@ export default class Splash extends Component{
 
     }
     //当如果用户手动点击了跳转界面，将定时任务清空。
-    jumpMovie=()=>{
+    jumpMovieByUser=()=>{
         this.JumpMovie();
         this.time_interval&&clearInterval(this.time_interval);
-}
+    }
 
     JumpMovie(){
         const {navigator}=this.props;//从navigator.js中将navigator取出来。
         if(navigator) {
-            navigator.replace({
+            navigator.replace({              //如果是使用push的话，会出现0秒
                 name: 'Login',
                 component: Login,
             });
@@ -59,7 +59,7 @@ export default class Splash extends Component{
                             <Text style={styles.headerSubTextUp}>Wall.E(2008)</Text>
                         </View>
 
-                            <TouchableOpacity style={styles.splashRightView} onPress={this.jumpMovie}>
+                            <TouchableOpacity style={styles.splashRightView} onPress={this.jumpMovieByUser}>
                                 <Text style={styles.splashRightText}>
                                     跳 过 {this.state.time}
                                 </Text>

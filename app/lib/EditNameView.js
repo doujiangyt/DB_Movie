@@ -28,7 +28,7 @@ export default class EditNameView extends Component{
                            onChangeText={
                     (text)=>{
                         this.setState({text});
-                        this.props.onChangeText(text);//通过TextInput的onChangeText方法获取到用户输入的内容。
+                        this.props.onChangeText(text);//通过TextInput的onChangeText方法获取到用户输入的内容并给EditNameView控件一个onChangeText的属性。
                     }
                 }/>
             </View>

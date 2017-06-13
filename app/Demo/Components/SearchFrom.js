@@ -18,6 +18,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import SearchResult from './SearchResult';
+import styles from '../Styles/Main';
 export default class SearchFrom extends Component{
     constructor(props){
         super(props);
@@ -38,29 +39,26 @@ export default class SearchFrom extends Component{
             });
     }
     searchHistory(item){
-
             let newSearchHistory = [...new Set([item, ...this.state.searchHistory])];//使用spred操作符
             this.setState({
                 searchHistory: newSearchHistory
             });
-
             //在这里把数据存储进asyncStoryage
             AsyncStorage.setItem('searchHistoryItem', JSON.stringify(newSearchHistory));//接收两个参数，一个是key，另一个是值，但是值只能接收string类型的，所以要将数组变成字符串。
 
     }
 //https://api.douban.com/v2/movie/search?q=${this.state.query}
     fetchData(){
-        if(!this.state.query){
+        if(!this.state.query){      //如果查询时，内容为空，就返回
             return;
         }
-        this.setState({load:true});
+
         let REQUEST_URL=`https://api.douban.com/v2/movie/search?q=${this.state.query}`
         this.searchHistory(this.state.query);
-
          fetch(REQUEST_URL)
                      .then(response=>response.json())
                      .then(responseData=>{
-                         this.setState({loaded:false})
+                         this.setState({loaded:true})
                          this.props.navigator.push({
                              name:`${this.state.query}相关电影`,
                              component:SearchResult,
@@ -85,7 +83,7 @@ export default class SearchFrom extends Component{
                    <TextInput
                        //secureTextEntry={true} 设置文本的安全输入
                        value={this.state.query}
-                       //autoFocus={true}        //自动获取焦点
+                       autoFocus={true}        //自动获取焦点
                        placeholder='搜索...' //占位符
                        //clearButtonMode='always'  //清除按钮出现在文本视图右侧的时机
                        returnKeyType='search'
@@ -96,7 +94,8 @@ export default class SearchFrom extends Component{
                             })
                        }}
                        onSubmitEditing={               //这个方法是用来点击软键盘上的搜索或者enter时，将数据进行提交，到服务器上去查询
-                               this.fetchData.bind(this)
+                              this.fetchData.bind(this)
+                               // this.submitEditing.bind(this)
                        }
 
 
@@ -114,7 +113,6 @@ export default class SearchFrom extends Component{
                    }}/>
                </View>
                 <Text style={SearchFromStyles.searchHeader}>搜索历史</Text>
-
                     <ListView
                         dataSource={ new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}).cloneWithRows(
                             this.state.searchHistory
@@ -125,6 +123,25 @@ export default class SearchFrom extends Component{
             </View>
         );
     }
+    //点击提交按钮时的相关操作
+    submitEditing(){
+        //隐藏键盘
+        Keyboard.dismiss();
+        //返回一个加载中的视图
+       /* if(!this.state.loaded){
+
+                return(
+                    <View style={styles.loading}>
+                        <ActivityIndicator size='large' color='#6535c9' />
+                    </View>
+                );
+
+        }*/
+        //下载数据
+        this.fetchData.bind(this);
+    }
+
+
     //跳转到搜索结果界面
    async  JumpToSearchResult(item){           //当使用这个方法的时候，在给query赋值时，这时候搜索，可能搜索结果为空，因为他直接去执行了fetchData方法，这时候需要使用es7中的async以及await
        // alert(item)

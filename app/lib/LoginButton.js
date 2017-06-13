@@ -15,7 +15,7 @@ import {
 export default class LoginButton extends Component{
     constructor(props){
         super(props);
-        this.state={text:''};
+
     }
     render(){
         return(

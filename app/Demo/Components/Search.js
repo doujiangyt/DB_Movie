@@ -21,9 +21,6 @@ export  default class Search extends Component{
     render(){
         let defaultName ="搜索";
         let defaultComponent = SearchFrom;
-
-
-
         return (
             <Navigator
                 initialRoute={{name:defaultName,component:defaultComponent,id:'SearchFrom'}}
@@ -32,12 +29,8 @@ export  default class Search extends Component{
                     <Navigator.NavigationBar style={{backgroundColor: 'darkslateblue', alignItems: 'center'}}
                                              routeMapper={NavigationBarRouteMapper} />
                 } />
-
-
         )
     }
-
-
 
     renderScene(route,navigator){
         return (
@@ -47,9 +40,7 @@ export  default class Search extends Component{
 }
 
 var NavigationBarRouteMapper = {
-
     LeftButton(route, navigator, index, navState) {
-
         if (route.id === 'SearchFrom') {
             return null;
         }
@@ -57,14 +48,11 @@ var NavigationBarRouteMapper = {
         return (
             <TouchableOpacity
                 onPress={() => {
-
                     navigator.pop()}}
                 style={{marginTop:12}}>
                 <Image source={require('../image/arror.png')}  />
             </TouchableOpacity>
         );
-
-
     },
     RightButton(route, navigator, index, navState) {
         return null;
@@ -78,10 +66,9 @@ var NavigationBarRouteMapper = {
             </View>
         );
     }
-
 };
-const featuredStyles=StyleSheet.create({
 
+const featuredStyles=StyleSheet.create({
     title:{
         color: 'white', marginTop: 16,marginBottom:10, fontSize: 16,marginLeft:100
     },

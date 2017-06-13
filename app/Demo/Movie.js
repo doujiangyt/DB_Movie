@@ -22,7 +22,7 @@ export default class Movie extends Component {
     constructor(props) {
         super(props);
         this.state={
-            selectedTab:'推荐电影'
+            selectedTab:'推荐电影'              //默认选择的界面
         }
     }
 
@@ -85,7 +85,7 @@ export default class Movie extends Component {
 
         );
     }
-    renderTabBarItem(title,iconName,selectedIconName,selectedTab,componentName,component,badgeText){
+    renderTabBarItem(title,iconName,selectedIconName,selectedTab,componentName,component,badgeText){           //这是对TabNavigator.Item做了一个抽取。
         return(
         <TabNavigator.Item
             selected={this.state.selectedTab===selectedTab}
@@ -116,27 +116,7 @@ export default class Movie extends Component {
     }
 
 }
-{/*<TabNavigator.Item
-    selected={this.state.selectedTab === '推荐电影'}
-    title="推荐电影"
-    titleStyle={{color:'white'}}
-    renderIcon={() => <Image source={require('./image/ios7-star-outline.png')} style={styles.iconColors }/>}
-    renderSelectedIcon={() =><Image source={require('./image/ios7-star.png')} style={styles.iconColors}/>}
-    //badgeText="1"
-    onPress={() => this.setState({ selectedTab: '推荐电影' })}>
-    <Featured/>
-</TabNavigator.Item>
-<TabNavigator.Item
-selected={this.state.selectedTab === '北美票房'}
-title="北美票房"
-titleStyle={{color:'white'}}
-renderIcon={() =><Image source={require('./image/hot_unpressed.png')} style={styles.iconColors}/>}
-renderSelectedIcon={() => <Image source={require('./image/hot_pressed.png')} style={styles.iconColors}/>}
-//renderBadge={() => <USBox />}
-onPress={() => this.setState({ selectedTab: '北美票房' })}>
 
-<USBox/>
-</TabNavigator.Item>*/}
 let styles=StyleSheet.create({
     renderIcon:{
         paddingTop:6

@@ -16,7 +16,6 @@ export default class MovieDetails extends Component{
         super(props);
         this.state={
             movies:'',
-
             isLoaded:false
         }
 
